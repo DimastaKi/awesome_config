@@ -24,11 +24,9 @@ local battery_widget = require("battery-widget.battery")
 ----- CALENDAR-----
 local calendar = require("calendar")
 ----- brightness -----------
-
+local redshift = require("redshift")
 ------------------------------------
-
---local battery_widget = require("battery-widget")
---local battery = battery_widget({adapter = "BAT0"})
+local cpu_widget = require("cpu-widget")
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
@@ -82,15 +80,15 @@ awful.layout.layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
+    --awful.layout.suit.tile.bottom,
+    --awful.layout.suit.tile.top,
     awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
+    --awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
+    --awful.layout.suit.spiral.dwindle,
+    --awful.layout.suit.max,
+    --awful.layout.suit.max.fullscreen,
+    --awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
@@ -173,8 +171,12 @@ local tasklist_buttons = gears.table.join(
                                                   )
                                               end
                                           end),
-                     awful.button({ }, 3, function()
-                                              awful.menu.client_list({ theme = { width = 250 } })
+                     --awful.button({ }, 3, function()
+                                              --awful.menu.client_list({ theme = { width = 250 } })
+
+                    ------------ убивает окно при нажатии пр.кл.мш на панеле задач-------------------                          
+                                              awful.button({ }, 3, function (c)
+   										 c:kill()
                                           end),
                      awful.button({ }, 4, function ()
                                               awful.client.focus.byidx(1)
@@ -245,11 +247,17 @@ awful.tag({ "  α  ", "  β  ", "  ζ  ", "  Θ  "}, s, awful.layout.layouts[1])
         s.mytasklist, -- Middle widget
         { -- ---------------------Right widgets------------------------------
             layout = wibox.layout.fixed.horizontal,
+             ------- cpu_widget ------
+	    cpu_widget,
+
 	    mykeyboardlayout,
 	    wibox.widget.systray(),
-		--------------------------battery.widget, -------------------
+	    		--------------------------battery.widget, -------------------
             battery_widget,
 	 -----------------------------------------------------------
+	   
+
+
             mytextclock,
             s.mylayoutbox,
         },
@@ -280,6 +288,17 @@ globalkeys = gears.table.join(
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
+
+
+
+        -- Toggle redshift (night mode)
+    awful.key({ modkey }, ",",      function () redshift.toggle() end),
+    awful.key({ modkey }, ".",          function () redshift.dim() end),
+    ---awful.key({ modkey, "Shift" }, "d", function () redshift.undim() end),
+    
+
+
+
 --------------------------- light -------------------------------------------
  
 --- ------------------------------- System off key ------------------------
@@ -365,6 +384,10 @@ awful.key({ modkey }, "d", function () awful.util.spawn_with_shell("doublecmd") 
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
+
+
+
+
 
 
 
@@ -523,10 +546,10 @@ awful.rules.rules = {
 	properties = {screen  = 1, tag  = "  β  " } },
 -- запуск Telegram----
 	{rule = {class = "Telegram"},
-	properties = { screen  = 1, tag  = "  α  " } },
+	properties = { screen  = 1, tag  = "  α  ", titlebars_enabled = false} },
 -- запуск Vivaldi
 	{rule = {class = "Vivaldi-stable"},
-	properties = {screen  = 1, tag  = "  α  " } },
+	properties = {screen  = 1, tag  = "  α  ", titlebars_enabled = false } },
 -- запуск Mousepad
 	{rule = {class = "Mousepad"},
 	properties = {screen  = 1, tag  = "  β  " } },
@@ -715,11 +738,11 @@ run_once("xfce4-power-manager")
 --run_once("/usr/lib/gnome-settings-daemon/gsd-a11y-settings")
 --run_once("/usr/lib/gnome-settings-daemon/gsd-sound")
 run_once("/usr/bin/libinput-gestures")
-run_once("vivaldi-stable")
+--run_once("vivaldi-stable")
 run_once("numlockx")
 --run_once("xbindkeys_autostart")
 --run_once("/usr/bin/gnome-keyring-daemon --start --components=ssh")
 --run_once("/usr/bin/gnome-keyring-daemon --start --components=pkcs11")
 --run_once("/usr/bin/gnome-keyring-daemon --start --components=secrets")
-run_once("redshift-gtk")
+--run_once("redshift-gtk")
 --run_once("/usr/lib/at-spi2-core/at-spi-bus-launcher --launch-immediately")
