@@ -22,7 +22,7 @@ require("awful.hotkeys_popup.keys")
 local battery_widget = require("battery-widget.battery")
 
 ----- CALENDAR-----
-local calendar = require("calendar")
+local calendar = require("calendar-aw")
 
 ----- brightness -----------
 local redshift = require("redshift-aw")
