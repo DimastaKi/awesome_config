@@ -292,9 +292,9 @@ globalkeys = gears.table.join(
 
 
         -- Toggle redshift (night mode)
-    awful.key({ modkey }, ",",      function () redshift.toggle() end),
+    awful.key({ modkey }, "/",      function () redshift.toggle() end),
     awful.key({ modkey }, ".",          function () redshift.dim() end),
-    ---awful.key({ modkey, "Shift" }, "d", function () redshift.undim() end),
+    awful.key({ modkey }, ",", function () redshift.undim() end),
     
 
 
