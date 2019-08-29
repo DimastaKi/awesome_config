@@ -19,7 +19,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 ------------------------------------
-local battery_widget = require("battery-widget.battery")
+local battery_widget = require("battery-widget-aw.battery")
 
 ----- CALENDAR-----
 local calendar = require("calendar-aw")
