@@ -23,8 +23,9 @@ local battery_widget = require("battery-widget.battery")
 
 ----- CALENDAR-----
 local calendar = require("calendar")
+
 ----- brightness -----------
-local redshift = require("redshift")
+local redshift = require("redshift-aw")
 ------------------------------------
 local cpu_widget = require("cpu-widget")
 
@@ -275,6 +276,8 @@ root.buttons(gears.table.join(
 ))
 
 -- }}}
+
+
 
 -- {{{ Key bindings
 
