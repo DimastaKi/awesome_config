@@ -1,7 +1,7 @@
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
-
+local vicious = require("vicious")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -14,6 +14,11 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
+local ram_widget = require("ram_widget")
+
+
+
 --os.setlocale(os.getenv("UA"))
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -61,8 +66,15 @@ end
 -- {{{ Variable definitions 
 --  --------------------------------------------------Themes define colours, icons, font and wallpapers.
 --theme.wallpaper = "~/.config/awesome/themes/awesome-wallpaper.png" 
---beautiful.init(gears.filesystem.get_themes_dir() .. "rbown/theme.lua")
-beautiful.init(gears.filesystem.get_themes_dir() .. "redhalo/theme.lua")
+
+--beautiful.init(gears.filesystem.get_themes_dir() .. "/home/damon/.config/awesome/redhalo_theme/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "redhalo/theme.lua")
+
+-- Themes define colours, icons, and wallpapers
+
+
+
+
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
@@ -142,7 +154,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock()
 calendar({}):attach(mytextclock)
 
--- Create a wibox for each screen and add it
+
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
                     awful.button({ modkey }, 1, function(t)
@@ -173,7 +185,7 @@ local tasklist_buttons = gears.table.join(
                                               end
                                           end),
                      --awful.button({ }, 3, function()
-                                              --awful.menu.client_list({ theme = { width = 250 } })
+                                             -- awful.menu.client_list({ theme = { width = 50 } }),
 
                     ------------ убивает окно при нажатии пр.кл.мш на панеле задач-------------------                          
                                               awful.button({ }, 3, function (c)
@@ -185,6 +197,7 @@ local tasklist_buttons = gears.table.join(
                      awful.button({ }, 5, function ()
                                               awful.client.focus.byidx(-1)
                                           end))
+
 
 local function set_wallpaper(s)
     -- Wallpaper--------------------------------------------------------------
@@ -244,19 +257,28 @@ awful.tag({ "  α  ", "  β  ", "  ζ  ", "  Θ  "}, s, awful.layout.layouts[1])
             mylauncher,
             s.mytaglist,
             s.mypromptbox,
+            wibox.widget.textbox(' | '),
         },
         s.mytasklist, -- Middle widget
         { -- ---------------------Right widgets------------------------------
+        weather_widget,
             layout = wibox.layout.fixed.horizontal,
-             ------- cpu_widget ------
-	    cpu_widget,
 
-	    mykeyboardlayout,
-	    wibox.widget.systray(),
-	    		--------------------------battery.widget, -------------------
-            battery_widget,
-	 -----------------------------------------------------------
-	   
+		wibox.widget.textbox(' | '),
+	    	wibox.widget.systray(),
+	    	battery_widget,
+            mykeyboardlayout,
+		wibox.widget.textbox('|'),
+                         ------- cpu&mem_widget ------
+
+	    	cpu_widget,
+            ram_widget,
+            
+	 -------------------------SENSOR----------------------------------
+	 	wibox.widget.textbox(' | '),
+	    	awful.widget.watch('bash -c "sensors | grep temp1"', 15),
+	    wibox.widget.textbox('|'),
+
 
 
             mytextclock,
@@ -743,6 +765,7 @@ run_once("xfce4-power-manager")
 run_once("/usr/bin/libinput-gestures")
 --run_once("vivaldi-stable")
 run_once("numlockx")
+run_once("thinkfan")
 --run_once("xbindkeys_autostart")
 --run_once("/usr/bin/gnome-keyring-daemon --start --components=ssh")
 --run_once("/usr/bin/gnome-keyring-daemon --start --components=pkcs11")
